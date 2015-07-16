@@ -6,6 +6,7 @@ import sys
 import json
 import os
 import time
+import subprocess
 from getpass import getpass
 r=lambda : sys.stdin.readline()
 
@@ -24,6 +25,10 @@ def get_language(filename):
     if extension in ['.c']:
         return 0
     elif extension in ['.cpp','.cc','.cxx']:
+        s = subprocess.Popen(["g++",filename], stderr=subprocess.PIPE)
+        s.wait()
+        if '++11' in s.stderr.read():
+            return 49
         return 1
     elif extension in ['.p','.pas']:
         return 2
